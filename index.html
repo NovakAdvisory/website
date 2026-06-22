@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novak Advisory — Real Estate Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0C1C33;--navy-mid:#132340;--navy-deep:#08111F;
+  --gold:#C9A84C;--gold-light:#DDB95E;
+  --cream:#F7F2E8;--cream-mid:#EDE5D4;--cream-dark:#D4C9B4;
+  --text-bright:#EEF3F8;--text-navy:#C5D3E0;--text-muted:#7A8FA8;
+  --text-cream:#1A2E50;--text-cream-soft:#5A6B7D;
+  --dn:rgba(201,168,76,0.15);--dc:rgba(12,28,51,0.1);
+  --cb:rgba(255,255,255,0.03);--cbr:rgba(201,168,76,0.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text-navy);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+.fd{font-family:'Fraunces',serif;font-weight:300;line-height:1.1;letter-spacing:-0.02em;}
+.fi{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--gold);}
+.fi-d{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--navy);}
+.ey{font-size:0.63rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+.ey-d{color:var(--navy-mid);}
+.rule{width:2rem;height:1px;background:var(--gold);margin:0.8rem 0 1.25rem;}
+.rule-c{margin:0.8rem auto 1.25rem;}
+.rule-d{background:var(--navy-mid);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,17,31,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--dn);}
+.nl{font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;color:var(--text-bright);text-decoration:none;letter-spacing:0.05em;}
+.nl span{color:var(--gold);}
+.ns{font-size:0.57rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-top:0.1rem;}
+.nv{display:flex;align-items:center;gap:1.75rem;list-style:none;}
+.nv a{font-size:0.73rem;color:var(--text-muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;}
+.nv a:hover{color:var(--gold);}
+.nc{color:var(--navy)!important;background:var(--gold);padding:0.48rem 1.25rem;border-radius:1px;font-weight:600;font-size:0.73rem;transition:background 0.2s;}
+.nc:hover{background:var(--gold-light);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.76rem;font-weight:600;letter-spacing:0.08em;padding:0.82rem 1.75rem;border-radius:1px;text-decoration:none;transition:all 0.18s;font-family:'Inter',sans-serif;}
+.bg{background:var(--gold);color:var(--navy);}
+.bg:hover{background:var(--gold-light);transform:translateY(-1px);}
+.bgh{border:1px solid rgba(201,168,76,0.35);color:var(--gold);}
+.bgh:hover{border-color:var(--gold);}
+.bd{background:var(--navy);color:var(--text-bright);}
+.bd:hover{background:var(--navy-mid);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:8rem 3rem 5rem;position:relative;overflow:hidden;}
+.hg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 55% at 75% 45%,rgba(201,168,76,0.07) 0%,transparent 65%);}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1240px;margin:0 auto;width:100%;position:relative;z-index:1;}
+.hk{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.75rem;}
+.hkl{width:2rem;height:1px;background:var(--gold);}
+.hh{font-size:clamp(2.8rem,5.2vw,4.6rem);color:var(--text-bright);margin-bottom:1.4rem;}
+.hp{font-size:0.87rem;color:var(--text-muted);line-height:1.9;max-width:430px;margin-bottom:2.25rem;}
+.hbtns{display:flex;gap:0.8rem;flex-wrap:wrap;}
+
+
+/* PORTAL */
+.portal{background:var(--navy-deep);border:1px solid var(--cbr);border-radius:5px;overflow:hidden;box-shadow:0 50px 90px rgba(0,0,0,0.55),0 0 0 1px rgba(201,168,76,0.07);}
+.pb{background:#060E1B;padding:0.62rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05);}
+.pd{display:flex;gap:0.36rem;}
+.pdt{width:8px;height:8px;border-radius:50%;}
+.pu{font-size:0.57rem;color:var(--text-muted);font-family:monospace;}
+.pbg{font-size:0.55rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.1);padding:0.16rem 0.46rem;border-radius:2px;}
+.ph{background:#09152A;padding:0.9rem 1.15rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ppr{font-family:'Fraunces',serif;font-size:0.86rem;color:var(--text-bright);}
+.ps{font-size:0.57rem;color:var(--text-muted);margin-top:0.1rem;letter-spacing:0.05em;}
+.prec{font-size:0.57rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#28C840;background:rgba(40,200,64,0.1);padding:0.22rem 0.62rem;border-radius:2px;border:1px solid rgba(40,200,64,0.18);}
+.pbdy{padding:0.9rem 1.15rem;}
+.pkpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0.42rem;margin-bottom:0.7rem;}
+.pkpi{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.055);border-radius:3px;padding:0.52rem 0.58rem;}
+.pkv{font-family:'Fraunces',serif;font-size:0.92rem;color:var(--gold);line-height:1;}
+.pkl{font-size:0.49rem;color:var(--text-muted);margin-top:0.18rem;text-transform:uppercase;letter-spacing:0.07em;}
+.pch{background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.048);border-radius:3px;padding:0.62rem 0.72rem;margin-bottom:0.62rem;}
+.pchl{font-size:0.52rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.45rem;}
+.bars{display:flex;align-items:flex-end;gap:0.38rem;height:50px;}
+.bg2{display:flex;flex-direction:column;align-items:center;gap:0.16rem;flex:1;}
+.bw2{display:flex;gap:2px;align-items:flex-end;height:42px;}
+.b2{border-radius:1px 1px 0 0;}
+.by{font-size:0.44rem;color:var(--text-muted);}
+.psc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.42rem;}
+.sc{background:rgba(255,255,255,0.018);border-radius:3px;padding:0.45rem 0.55rem;border-left:2px solid;}
+.scbear{border-color:#FF5F57;}.scbase{border-color:var(--gold);}.scbull{border-color:#28C840;}
+.scn{font-size:0.47rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.2rem;}
+.scbear .scn{color:#FF5F57;}.scbase .scn{color:var(--gold);}.scbull .scn{color:#28C840;}
+.scv{font-family:'Fraunces',serif;font-size:0.86rem;color:var(--text-bright);}
+.scs{font-size:0.44rem;color:var(--text-muted);margin-top:0.07rem;}
+
+/* TICKER */
+.ticker{background:var(--navy-deep);border-top:1px solid var(--dn);border-bottom:1px solid var(--dn);padding:0.58rem 0;overflow:hidden;}
+.tt{display:flex;gap:3.5rem;white-space:nowrap;animation:tick 38s linear infinite;}
+.ti{display:flex;align-items:center;gap:0.72rem;flex-shrink:0;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);}
+.tp{width:3px;height:3px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* BEFORE AFTER — cream */
+.ba-sec{background:var(--cream);}
+.ba-in{max-width:1240px;margin:0 auto;padding:7rem 3rem;}
+.ba-h{font-size:clamp(1.85rem,3vw,2.75rem);color:var(--text-cream);margin-top:0.75rem;margin-bottom:3rem;}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.ba-card{border-radius:3px;padding:2.25rem;border:1px solid;}
+.ba-before{background:#EDE8DF;border-color:var(--dc);}
+.ba-after{background:var(--navy);border-color:var(--dn);}
+.ba-lbl{font-size:0.59rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.1rem;}
+.ba-before .ba-lbl{color:var(--text-cream-soft);}
+.ba-after .ba-lbl{color:var(--gold);}
+.ba-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;line-height:1.4;margin-bottom:1.35rem;}
+.ba-before .ba-title{color:var(--text-cream);}
+.ba-after .ba-title{color:var(--text-bright);}
+.ba-items{display:flex;flex-direction:column;gap:0.65rem;}
+.ba-item{font-size:0.79rem;line-height:1.6;padding-left:0.9rem;position:relative;}
+.ba-item::before{content:'';position:absolute;left:0;top:0.58rem;width:0.35rem;height:1px;}
+.ba-before .ba-item{color:var(--text-cream-soft);}
+.ba-before .ba-item::before{background:var(--text-cream-soft);}
+.ba-after .ba-item{color:var(--text-navy);}
+.ba-after .ba-item::before{background:var(--gold);}
+.ba-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:3rem;background:var(--dc);border:1px solid var(--dc);}
+.ba-stat{background:var(--cream);padding:1.35rem 1.1rem;}
+.ba-sn{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;color:var(--navy);line-height:1;margin-bottom:0.28rem;}
+.ba-st{font-size:0.7rem;color:var(--text-cream-soft);line-height:1.45;}
+.ba-ss{font-size:0.56rem;color:rgba(90,107,125,0.5);margin-top:0.28rem;}
+
+/* SERVICE — navy */
+.svc-sec{background:var(--navy);border-top:1px solid var(--dn);}
+.svc-in{max-width:1240px;margin:0 auto;padding:7rem 3rem;}
+.svc-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:start;}
+.svc-sticky{position:sticky;top:8rem;}
+.svc-h{font-size:clamp(1.85rem,3vw,2.75rem);color:var(--text-bright);margin-top:0.75rem;margin-bottom:1.1rem;}
+.svc-p{font-size:0.84rem;color:var(--text-muted);line-height:1.85;margin-bottom:0.85rem;}
+.svc-note{margin-top:1.5rem;padding:1rem 1.25rem;background:rgba(201,168,76,0.05);border:1px solid var(--cbr);border-radius:2px;font-size:0.74rem;color:var(--text-muted);line-height:1.6;}
+.svc-note strong{color:var(--gold);font-weight:500;}
+.dlvs{display:flex;flex-direction:column;}
+.dlv{padding:1rem 0;border-bottom:1px solid var(--dn);display:flex;gap:0.9rem;align-items:flex-start;}
+.dlv:first-child{border-top:1px solid var(--dn);}
+.dn{font-family:'Fraunces',serif;font-size:0.72rem;color:var(--gold);flex-shrink:0;width:1.3rem;padding-top:0.04rem;}
+.dt{font-size:0.83rem;font-weight:500;color:var(--text-bright);margin-bottom:0.2rem;}
+.dp{font-size:0.75rem;color:var(--text-muted);line-height:1.6;}
+
+/* CALCULATOR — cream */
+.calc-sec{background:var(--cream);border-top:1px solid var(--dc);}
+.calc-in{max-width:1240px;margin:0 auto;padding:7rem 3rem;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.calc-h{font-size:clamp(1.85rem,3vw,2.75rem);color:var(--text-cream);margin-top:0.75rem;margin-bottom:1rem;}
+.calc-p{font-size:0.83rem;color:var(--text-cream-soft);line-height:1.85;margin-bottom:0.75rem;}
+.calc-note{font-size:0.69rem;color:rgba(90,107,125,0.6);line-height:1.6;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--dc);}
+.calc-box{background:var(--navy);border:1px solid var(--cbr);border-radius:5px;overflow:hidden;}
+.cbh{background:var(--navy-deep);padding:1rem 1.4rem;border-bottom:1px solid var(--dn);}
+.cbht{font-family:'Fraunces',serif;font-size:0.92rem;color:var(--text-bright);}
+.cbhs{font-size:0.58rem;color:var(--text-muted);margin-top:0.1rem;letter-spacing:0.05em;}
+.cbf{padding:1.4rem;}
+.cbi{display:flex;flex-direction:column;gap:0.9rem;margin-bottom:1.1rem;}
+.cbf label{display:block;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.36rem;}
+.cbf input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:2px;padding:0.62rem 0.8rem;font-size:0.8rem;color:var(--text-bright);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.cbf input:focus{border-color:rgba(201,168,76,0.4);}
+.cbf input::placeholder{color:var(--text-muted);}
+.cbtn{width:100%;background:var(--gold);color:var(--navy);font-size:0.76rem;font-weight:600;letter-spacing:0.09em;padding:0.82rem;border:none;border-radius:2px;cursor:pointer;transition:background 0.18s;font-family:'Inter',sans-serif;}
+.cbtn:hover{background:var(--gold-light);}
+.cres{display:none;padding:0 1.4rem 1.4rem;}
+.cres.show{display:block;}
+.cdiv{height:1px;background:var(--dn);margin-bottom:1.1rem;}
+.crl{font-size:0.58rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.7rem;}
+.cmets{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.7rem;}
+.cmet{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:3px;padding:0.8rem 0.9rem;}
+.cmetv{font-family:'Fraunces',serif;font-size:1.25rem;color:var(--gold);line-height:1;margin-bottom:0.2rem;}
+.cmetl{font-size:0.56rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;}
+.csig{padding:0.8rem 0.95rem;border-radius:3px;font-size:0.73rem;line-height:1.55;margin-bottom:0.7rem;border-left:2px solid;}
+.csig.g{background:rgba(40,200,64,0.07);border-color:#28C840;color:#28C840;}
+.csig.a{background:rgba(254,188,46,0.07);border-color:#FEBC2E;color:#FEBC2E;}
+.csig.r{background:rgba(255,95,87,0.07);border-color:#FF5F57;color:#FF5F57;}
+.ccta{font-size:0.7rem;color:var(--text-muted);line-height:1.6;padding:0.8rem 0.95rem;background:rgba(201,168,76,0.05);border:1px solid var(--cbr);border-radius:3px;}
+.ccta a{color:var(--gold);text-decoration:none;font-weight:500;}
+.crst{display:none;background:none;border:none;font-size:0.66rem;color:var(--text-muted);cursor:pointer;font-family:'Inter',sans-serif;margin-top:0.7rem;letter-spacing:0.05em;}
+.crst:hover{color:var(--gold);}
+.crst.show{display:block;}
+
+/* CLIENTS — navy */
+.cli-sec{background:var(--navy-mid);border-top:1px solid var(--dn);}
+.cli-in{max-width:1240px;margin:0 auto;padding:7rem 3rem;}
+.cli-h{font-size:clamp(1.85rem,3vw,2.75rem);color:var(--text-bright);margin-top:0.75rem;margin-bottom:3rem;}
+.cli-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dn);border:1px solid var(--dn);}
+.cc{background:rgba(255,255,255,0.02);padding:1.65rem 1.3rem;transition:background 0.2s;}
+.cc:hover{background:rgba(255,255,255,0.04);}
+.cct{font-family:'Fraunces',serif;font-size:0.92rem;color:var(--text-bright);margin-bottom:0.45rem;line-height:1.3;}
+.ccp{font-size:0.72rem;color:var(--text-muted);line-height:1.62;}
+
+/* PULSE — cream */
+.pulse-sec{background:var(--cream);border-top:1px solid var(--dc);}
+.pulse-in{max-width:1240px;margin:0 auto;padding:7rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.pulse-h{font-size:clamp(1.85rem,3vw,2.75rem);color:var(--text-cream);margin-top:0.75rem;margin-bottom:1rem;}
+.pulse-p{font-size:0.83rem;color:var(--text-cream-soft);line-height:1.85;margin-bottom:0.75rem;}
+.pulse-pils{display:flex;gap:2rem;margin-top:1.5rem;}
+.ppv{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:300;color:var(--navy);line-height:1;}
+.ppl{font-size:0.62rem;color:var(--text-cream-soft);margin-top:0.18rem;letter-spacing:0.05em;}
+.pcard{background:var(--navy);border:1px solid var(--cbr);border-radius:4px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.25);}
+.pctop{background:var(--navy-deep);padding:0.95rem 1.3rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--dn);}
+.pcn{font-family:'Fraunces',serif;font-size:0.84rem;color:var(--text-bright);}
+.pci{font-size:0.57rem;color:var(--text-muted);letter-spacing:0.05em;margin-top:0.1rem;}
+.pcpriv{font-size:0.53rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.28);padding:0.17rem 0.48rem;border-radius:1px;}
+.pcb{padding:1rem 1.3rem;}
+.pcsl{font-size:0.55rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.55rem;}
+.pcrow{display:flex;justify-content:space-between;align-items:center;padding:0.52rem 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.69rem;}
+.pcrow:last-of-type{border-bottom:none;}
+.pcm{color:var(--text-muted);}
+.pcv{font-family:'Fraunces',serif;font-size:0.78rem;color:var(--gold);}
+.pctag{font-size:0.54rem;padding:0.12rem 0.38rem;border-radius:2px;}
+.tup{color:#28C840;background:rgba(40,200,64,0.1);}
+.tfl{color:var(--text-muted);background:rgba(255,255,255,0.05);}
+.twt{color:#FEBC2E;background:rgba(254,188,46,0.1);}
+.pctake{font-size:0.67rem;color:var(--text-muted);line-height:1.65;padding-top:0.65rem;border-top:1px solid rgba(255,255,255,0.05);margin-top:0.4rem;}
+.pcacc{display:flex;align-items:center;justify-content:space-between;background:rgba(12,28,51,0.06);border:1px solid var(--dc);border-radius:3px;padding:0.75rem 1.05rem;margin-top:0.8rem;font-size:0.68rem;color:var(--text-cream-soft);gap:1rem;}
+.pcacc a{font-size:0.68rem;font-weight:600;color:var(--navy);text-decoration:none;white-space:nowrap;}
+
+/* PRINCIPLES — navy */
+.prin-sec{background:var(--navy);border-top:1px solid var(--dn);}
+.prin-in{max-width:1240px;margin:0 auto;padding:6rem 3rem;}
+.prin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dn);border:1px solid var(--dn);margin-top:2.5rem;}
+.prin{background:rgba(255,255,255,0.02);padding:1.75rem 1.6rem;}
+.prit{font-family:'Fraunces',serif;font-size:0.95rem;color:var(--gold);margin-bottom:0.45rem;}
+.prip{font-size:0.75rem;color:var(--text-muted);line-height:1.68;}
+
+/* CTA */
+.cta-sec{background:var(--navy-mid);border-top:1px solid var(--dn);padding:7rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.cta-gl{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 45% 55% at 50% 100%,rgba(201,168,76,0.07) 0%,transparent 65%);}
+.cta-in{max-width:620px;margin:0 auto;position:relative;z-index:1;}
+.cta-h{font-size:clamp(2.2rem,4vw,3.5rem);color:var(--text-bright);margin:0.75rem 0 1.1rem;}
+.cta-p{font-size:0.85rem;color:var(--text-muted);line-height:1.85;margin-bottom:2.25rem;}
+.cta-btns{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;}
+.cta-cs{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap;padding-top:1.75rem;border-top:1px solid var(--dn);}
+.cta-c{font-size:0.71rem;color:var(--text-muted);}
+.cta-c a{color:var(--gold);text-decoration:none;}
+
+/* FOOTER */
+footer{background:var(--navy-deep);border-top:1px solid var(--dn);padding:2.1rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.fb{font-family:'Fraunces',serif;font-size:1rem;color:var(--text-bright);letter-spacing:0.05em;}
+.fb span{color:var(--gold);}
+.fs{font-size:0.56rem;color:var(--text-muted);margin-top:0.16rem;letter-spacing:0.1em;text-transform:uppercase;}
+.fc{font-size:0.61rem;color:rgba(122,143,168,0.4);text-align:right;line-height:1.65;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(14px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.rv.in{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  .nv{display:none;}
+  .hero,.cta-sec{padding-left:1.5rem;padding-right:1.5rem;}
+  .hgrid,.ba-grid,.svc-grid,.calc-grid,.pulse-in{grid-template-columns:1fr;gap:2.5rem;}
+  .ba-stats{grid-template-columns:1fr 1fr;}
+  .cli-grid{grid-template-columns:1fr 1fr;}
+  .prin-grid{grid-template-columns:1fr;}
+  .svc-sticky{position:static;}
+  .pkpis{grid-template-columns:1fr 1fr;}
+
+  .ba-in,.svc-in,.calc-in,.cli-in,.pulse-in,.prin-in{padding:4.5rem 1.5rem;}
+  footer{flex-direction:column;text-align:center;}
+  .fc{text-align:center;}
+  .cmets{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:560px){
+  .cli-grid{grid-template-columns:1fr;}
+  .ba-stats{grid-template-columns:1fr 1fr;}
+  .cta-cs{gap:1rem;flex-direction:column;align-items:center;}
+  .pulse-pils{gap:1.25rem;}
+}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none;}
+  .tt{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nl">
+    <div>Novak<span>.</span></div>
+    <div class="ns">Real Estate Intelligence</div>
+  </a>
+  <ul class="nv">
+    <li><a href="#service">Services</a></li>
+    <li><a href="#calc">Quick Check</a></li>
+    <li><a href="#clients">Who We Serve</a></li>
+    <li><a href="#pulse">Market Pulse</a></li>
+    <li><a href="#contact" class="nc">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hg"></div>
+  <div class="hgrid">
+    <div>
+      <div class="hk rv"><div class="hkl"></div><span class="ey">Real Estate Intelligence</span></div>
+      <h1 class="fd hh rv">Know your numbers<br><span class="fi">before</span> you commit.</h1>
+      <p class="hp rv">An independent financial analysis of your real estate project. What it will cost. What it will return. And whether you should go ahead.</p>
+      <div class="hbtns rv">
+        <a href="#contact" class="btn bg">Begin a conversation &rarr;</a>
+        <a href="#service" class="btn bgh">Our work</a>
+      </div>
+
+    </div>
+    <!-- PORTAL -->
+    <div class="portal rv">
+      <div class="pb">
+        <div class="pd"><div class="pdt" style="background:#FF5F57"></div><div class="pdt" style="background:#FEBC2E"></div><div class="pdt" style="background:#28C840"></div></div>
+        <div class="pu">portal.novakadvisory.in &middot; encrypted</div>
+        <div class="pbg">Client Portal</div>
+      </div>
+      <div class="ph">
+        <div><div class="ppr">Vesu Commercial Tower &middot; G+21</div><div class="ps">Novak Advisory &middot; Mandate NVK-001 &middot; June 2026</div></div>
+        <div class="prec">Strategy B Recommended</div>
+      </div>
+      <div class="pbdy">
+        <div class="pkpis">
+          <div class="pkpi"><div class="pkv">&#8377;68Cr</div><div class="pkl">Total Cost</div></div>
+          <div class="pkpi"><div class="pkv">18.2%</div><div class="pkl">Base IRR</div></div>
+          <div class="pkpi"><div class="pkv">1.25&times;</div><div class="pkl">DSCR Yr 1</div></div>
+          <div class="pkpi"><div class="pkv">55%</div><div class="pkl">Rec. LTC</div></div>
+        </div>
+        <div class="pch">
+          <div class="pchl">5-Year Cash Flow</div>
+          <div class="bars">
+            <div class="bg2"><div class="bw2"><div class="b2" style="width:9px;height:36px;background:rgba(201,168,76,0.65)"></div><div class="b2" style="width:9px;height:15px;background:rgba(255,95,87,0.4)"></div></div><div class="by">Y1</div></div>
+            <div class="bg2"><div class="bw2"><div class="b2" style="width:9px;height:30px;background:rgba(201,168,76,0.65)"></div><div class="b2" style="width:9px;height:11px;background:rgba(255,95,87,0.4)"></div></div><div class="by">Y2</div></div>
+            <div class="bg2"><div class="bw2"><div class="b2" style="width:9px;height:25px;background:rgba(201,168,76,0.65)"></div><div class="b2" style="width:9px;height:8px;background:rgba(255,95,87,0.4)"></div></div><div class="by">Y3</div></div>
+            <div class="bg2"><div class="bw2"><div class="b2" style="width:9px;height:20px;background:rgba(201,168,76,0.65)"></div><div class="b2" style="width:9px;height:6px;background:rgba(255,95,87,0.4)"></div></div><div class="by">Y4</div></div>
+            <div class="bg2"><div class="bw2"><div class="b2" style="width:9px;height:42px;background:rgba(40,200,64,0.65)"></div><div class="b2" style="width:9px;height:4px;background:rgba(255,95,87,0.4)"></div></div><div class="by">Y5</div></div>
+          </div>
+        </div>
+        <div class="psc">
+          <div class="sc scbear"><div class="scn">Bear</div><div class="scv">11.4%</div><div class="scs">IRR &middot; &#8377;8,100/sqft</div></div>
+          <div class="sc scbase"><div class="scn">Base</div><div class="scv">18.2%</div><div class="scs">IRR &middot; &#8377;9,000/sqft</div></div>
+          <div class="sc scbull"><div class="scn">Bull</div><div class="scv">24.6%</div><div class="scs">IRR &middot; &#8377;10,500/sqft</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="tt">
+    <div class="ti"><div class="tp"></div>Vesu VIP Road &middot; &#8377;1.2&ndash;1.5L/sq yd</div>
+    <div class="ti"><div class="tp"></div>GIDC Sachin &middot; &#8377;45&ndash;55K/sq yd</div>
+    <div class="ti"><div class="tp"></div>Grade A RCC &middot; &#8377;2,200&ndash;2,300/sqft</div>
+    <div class="ti"><div class="tp"></div>VIP Road Office Yield &middot; 7&ndash;8% gross</div>
+    <div class="ti"><div class="tp"></div>Adajan Residential &middot; &#8377;90&ndash;110K/sq yd</div>
+    <div class="ti"><div class="tp"></div>PEB Warehouse &middot; &#8377;900&ndash;1,100/sqft</div>
+    <div class="ti"><div class="tp"></div>Vesu VIP Road &middot; &#8377;1.2&ndash;1.5L/sq yd</div>
+    <div class="ti"><div class="tp"></div>GIDC Sachin &middot; &#8377;45&ndash;55K/sq yd</div>
+    <div class="ti"><div class="tp"></div>Grade A RCC &middot; &#8377;2,200&ndash;2,300/sqft</div>
+    <div class="ti"><div class="tp"></div>VIP Road Office Yield &middot; 7&ndash;8% gross</div>
+    <div class="ti"><div class="tp"></div>Adajan Residential &middot; &#8377;90&ndash;110K/sq yd</div>
+    <div class="ti"><div class="tp"></div>PEB Warehouse &middot; &#8377;900&ndash;1,100/sqft</div>
+  </div>
+</div>
+
+<!-- THE PROBLEM — visceral, specific -->
+<section class="ba-sec" id="about">
+  <div class="ba-in">
+    <div class="rv">
+      <span class="ey ey-d">What we add</span>
+      <div class="rule rule-d"></div>
+      <h2 class="fd ba-h">The numbers that protect<br><span class="fi-d">your investment.</span></h2>
+      <p style="font-size:0.88rem;color:var(--text-cream-soft);line-height:1.85;max-width:620px;margin-top:1.1rem;margin-bottom:2.75rem;">Before you commit. An independent financial analysis that gives you a complete, verified picture of your project — what it will cost, what it will return, and where the risks sit.</p>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-card ba-before rv">
+        <div class="ba-lbl">What the analysis covers</div>
+        <div class="ba-title">Every number that matters. Verified. Before a single rupee moves.</div>
+        <div class="ba-items">
+          <div class="ba-item">What will this project actually cost to build — benchmarked independently against current market rates.</div>
+          <div class="ba-item">What will it return — modelled across three scenarios so you see the full picture, not just the best case.</div>
+          <div class="ba-item">What financing is achievable — structure, terms, and whether the project clears the threshold.</div>
+          <div class="ba-item">One clear recommendation. Go, no-go, or go with specific conditions.</div>
+        </div>
+      </div>
+      <div class="ba-card ba-after rv">
+        <div class="ba-lbl">What you walk away with</div>
+        <div class="ba-title">Clarity. Confidence. A document that works for every room you walk into.</div>
+        <div class="ba-items">
+          <div class="ba-item">A professional analysis delivered through a secure client portal — structured, clean, and ready to share.</div>
+          <div class="ba-item">Numbers you can take to your CA, your bank, or your business partner with complete confidence.</div>
+          <div class="ba-item">A financial model that stress-tests your project before the market does.</div>
+          <div class="ba-item">The certainty to move forward — or the clarity to step back.</div>
+        </div>
+      </div>
+    </div>
+    <div class="ba-stats">
+      <div class="ba-stat rv"><div class="ba-sn">42%</div><div class="ba-st">of construction projects in India exceed their budget</div><div class="ba-ss">MoSPI, 2024</div></div>
+      <div class="ba-stat rv"><div class="ba-sn">19%</div><div class="ba-st">average cost overrun on Indian construction projects</div><div class="ba-ss">MoSPI, 2024</div></div>
+      <div class="ba-stat rv"><div class="ba-sn">57%</div><div class="ba-st">project completion rate in 2024, down from 74% in 2017</div><div class="ba-ss">Anarock India, 2024</div></div>
+      <div class="ba-stat rv"><div class="ba-sn">Zero</div><div class="ba-st">independent advisory firms serving Tier 2 Gujarat developers today</div><div class="ba-ss">Novak primary research</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE -->
+<section class="svc-sec" id="service">
+  <div class="svc-in">
+    <div class="rv"><span class="ey">What we do</span><div class="rule"></div></div>
+    <div class="svc-grid">
+      <div class="svc-sticky">
+        <h2 class="fd svc-h rv">Independent financial analysis. Before you commit.</h2>
+        <p class="svc-p rv">We take your project — land size, location, what you plan to build — and give you a complete, honest financial picture.</p>
+        <p class="svc-p rv">Delivered through a professional client portal. Structured, clean, and ready to share.</p>
+        <div class="svc-note rv"><strong>Every engagement is scoped individually.</strong> We review your project first, then tell you exactly what the analysis covers — before any commitment is made.</div>
+        <div style="margin-top:1.5rem;" class="rv"><a href="#contact" class="btn bd">Discuss your project &rarr;</a></div>
+      </div>
+      <div class="dlvs rv">
+        <div class="dlv"><div class="dn">01</div><div><div class="dt">Project Cost Estimate</div><div class="dp">What your project will actually cost — independently benchmarked. Not a contractor's number. A number you can take to any negotiation.</div></div></div>
+        <div class="dlv"><div class="dn">02</div><div><div class="dt">Revenue and Yield Analysis</div><div class="dp">What the asset will earn — lease rates, vacancy, and net income built on real comparable data. Conservative and defensible.</div></div></div>
+        <div class="dlv"><div class="dn">03</div><div><div class="dt">Full Financial Model</div><div class="dp">IRR, NPV, cash flow, DSCR, and loan amortisation. Multiple strategies modelled where relevant — sell, lease, or hold.</div></div></div>
+        <div class="dlv"><div class="dn">04</div><div><div class="dt">Scenario Analysis</div><div class="dp">Three cases — conservative, expected, optimistic. You see the downside before you commit. Not after.</div></div></div>
+        <div class="dlv"><div class="dn">05</div><div><div class="dt">Financing Structure</div><div class="dp">What loan you can get, at what LTC, with which institutions. DSCR modelled at every scenario. Walk into the bank prepared.</div></div></div>
+        <div class="dlv"><div class="dn">06</div><div><div class="dt">Go / No-Go Recommendation</div><div class="dp">One page. Plain language. Go, no-go, or go with specific conditions. The honest answer, before commitment.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-sec" id="calc">
+  <div class="calc-in">
+    <div class="calc-grid">
+      <div class="rv">
+        <span class="ey ey-d">Quick Project Check</span>
+        <div class="rule rule-d"></div>
+        <h2 class="fd calc-h">Get a rough sense of your project in 60 seconds.</h2>
+        <p class="calc-p">Enter a few numbers. Get a preliminary read on project cost, potential return, and whether it broadly makes sense at current market rates.</p>
+        <p class="calc-p">This is a starting point — not an analysis. A full Novak engagement covers 40+ variables across three scenarios. But this tells you whether it is worth a conversation.</p>
+        <div class="calc-note">Indicative only. Based on simplified assumptions and current market benchmarks. Not investment advice.</div>
+      </div>
+      <div class="rv">
+        <div class="calc-box">
+          <div class="cbh"><div class="cbht">Project Quick Check</div><div class="cbhs">Preliminary indication &middot; Not a Novak analysis</div></div>
+          <div class="cbf">
+            <div class="cbi">
+              <div><label>Land Area (sq yards)</label><input type="number" id="c-land" placeholder="e.g. 5000" min="0"></div>
+              <div><label>Land Cost (&#8377; per sq yard)</label><input type="number" id="c-lc" placeholder="e.g. 120000" min="0"></div>
+              <div><label>Construction Cost (&#8377; per sqft built-up)</label><input type="number" id="c-cc" placeholder="e.g. 2200" min="0"></div>
+              <div><label>Expected Sale Price (&#8377; per sqft saleable)</label><input type="number" id="c-sp" placeholder="e.g. 9000" min="0"></div>
+              <div><label>Built-up Area (sqft)</label><input type="number" id="c-bua" placeholder="e.g. 40000" min="0"></div>
+            </div>
+            <button class="cbtn" onclick="runCalc()">Check the numbers &rarr;</button>
+            <button class="crst" id="c-rst" onclick="resetCalc()">Reset</button>
+          </div>
+          <div class="cres" id="c-res">
+            <div class="cdiv"></div>
+            <div style="padding:0 0 1.25rem;">
+              <div class="crl">Preliminary Indicators</div>
+              <div class="cmets">
+                <div class="cmet"><div class="cmetv" id="r-tdc">—</div><div class="cmetl">Est. Total Cost</div></div>
+                <div class="cmet"><div class="cmetv" id="r-rev">—</div><div class="cmetl">Est. Revenue</div></div>
+                <div class="cmet"><div class="cmetv" id="r-mgn">—</div><div class="cmetl">Gross Margin</div></div>
+                <div class="cmet"><div class="cmetv" id="r-be">—</div><div class="cmetl">Break-Even/sqft</div></div>
+              </div>
+              <div class="csig" id="r-sig"></div>
+              <div class="ccta">This is indicative only. A full Novak analysis covers benchmarking, financing, DSCR, and three scenario cases. <a href="#contact">Talk to us about your project &rarr;</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="cli-sec" id="clients">
+  <div class="cli-in">
+    <div class="rv"><span class="ey">Who we serve</span><div class="rule"></div>
+    <h2 class="fd cli-h">Three types of clients.<br><span class="fi">One common need.</span></h2></div>
+    <div class="cli-grid">
+      <div class="cc rv"><div class="cct">Real Estate Developers</div><p class="ccp">Developers evaluating a new project, land acquisition, or a new asset class. The independent financial layer that no internal team can provide without a stake in the outcome.</p></div>
+      <div class="cc rv"><div class="cct">HNI Investors</div><p class="ccp">Individuals deploying capital into real estate assets or development projects. An honest, independent picture — entry price, yield, IRR, and downside — before crores are committed.</p></div>
+      <div class="cc rv"><div class="cct">NRI Investors</div><p class="ccp">Investors committing capital from abroad without being able to visit sites or verify numbers independently. A professional, independent report they can rely on and share with family and their financial institution in India.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PULSE -->
+<section class="pulse-sec" id="pulse">
+  <div class="pulse-in">
+    <div class="rv">
+      <span class="ey ey-d">Novak Market Pulse</span>
+      <div class="rule rule-d"></div>
+      <h2 class="fd pulse-h">The intelligence the market was missing.</h2>
+      <p class="pulse-p">Published monthly. Verified land rates, construction costs, rental yields, and absorption data — sourced directly from the market.</p>
+      <p class="pulse-p">Invite-only. Read by developers, investors, CAs, and bank relationship managers who need accurate, primary-research data.</p>
+      <div class="pulse-pils">
+        <div><div class="ppv">Primary</div><div class="ppl">Research only</div></div>
+        <div><div class="ppv">Monthly</div><div class="ppl">Without exception</div></div>
+        <div><div class="ppv">Private</div><div class="ppl">Invite only</div></div>
+      </div>
+      <div style="margin-top:2rem;"><a href="#contact" class="btn bd">Request access &rarr;</a></div>
+    </div>
+    <div class="rv">
+      <div class="pcard">
+        <div class="pctop"><div><div class="pcn">Novak Market Pulse</div><div class="pci">Issue 02 &middot; June 2026 &middot; Real Estate Intelligence</div></div><div class="pcpriv">Private</div></div>
+        <div class="pcb">
+          <div class="pcsl">Land Rates &mdash; Verified</div>
+          <div class="pcrow"><div class="pcm">Vesu &middot; VIP Road</div><div style="display:flex;align-items:center;gap:0.5rem;"><div class="pcv">&#8377;1.2&ndash;1.5L/sq yd</div><div class="pctag twt">Watch</div></div></div>
+          <div class="pcrow"><div class="pcm">GIDC Sachin &middot; Industrial</div><div style="display:flex;align-items:center;gap:0.5rem;"><div class="pcv">&#8377;45&ndash;55K/sq yd</div><div class="pctag tup">Strong</div></div></div>
+          <div class="pcrow"><div class="pcm">Adajan &middot; Residential</div><div style="display:flex;align-items:center;gap:0.5rem;"><div class="pcv">&#8377;90&ndash;110K/sq yd</div><div class="pctag tfl">Stable</div></div></div>
+          <div class="pcsl" style="margin-top:0.8rem;">Construction Cost Index &middot; June 2026</div>
+          <div class="pcrow"><div class="pcm">Grade A RCC Commercial</div><div style="display:flex;align-items:center;gap:0.5rem;"><div class="pcv">&#8377;2,200&ndash;2,300/sqft</div><div class="pctag twt">+8% YoY</div></div></div>
+          <div class="pcrow"><div class="pcm">PEB Industrial</div><div style="display:flex;align-items:center;gap:0.5rem;"><div class="pcv">&#8377;900&ndash;1,100/sqft</div><div class="pctag tfl">Flat</div></div></div>
+          <div class="pcsl" style="margin-top:0.8rem;">Novak's Take</div>
+          <div class="pctake">Construction costs in Vesu are rising 8% year-on-year while office absorption sits at 18&ndash;24 months of inventory. Developers entering VIP Road at current land prices need to model a longer sell-down &mdash; or the returns do not hold.</div>
+        </div>
+      </div>
+      <div class="pcacc"><span>Invite-only. Request access to the monthly Pulse.</span><a href="#contact">Request access &rarr;</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="prin-sec" id="principles">
+  <div class="prin-in">
+    <div class="rv"><span class="ey">How we work</span><div class="rule"></div>
+    <h2 class="fd" style="font-size:clamp(1.85rem,3vw,2.75rem);color:var(--text-bright);margin-top:0.75rem;">Three principles.<br><span class="fi">Non-negotiable.</span></h2></div>
+    <div class="prin-grid">
+      <div class="prin rv"><div class="prit">Independent</div><p class="prip">We have no stake in your decision. We earn nothing from any party connected to your project. Our only interest is accuracy.</p></div>
+      <div class="prin rv"><div class="prit">Primary Research</div><p class="prip">Every benchmark in our models comes from verified conversations in the market. Not portal data. Not national averages that do not reflect local reality.</p></div>
+      <div class="prin rv"><div class="prit">Confidential</div><p class="prip">Your project, your numbers, your decisions — never shared or referenced without your explicit permission.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="contact">
+  <div class="cta-gl"></div>
+  <div class="cta-in">
+    <span class="ey rv">Begin a conversation</span>
+    <div class="rule rule-c rv"></div>
+    <h2 class="fd cta-h rv">Know your numbers<br><span class="fi">before</span> you commit.</h2>
+    <p class="cta-p rv">Tell us about your project. One conversation is enough to know whether we can help and what the analysis would cover.</p>
+    <div class="cta-btns rv">
+      <a href="https://wa.me/918469600956" class="btn bg">WhatsApp &rarr;</a>
+      <a href="mailto:novakadvisory02@gmail.com" class="btn bgh">Send an email</a>
+    </div>
+    <div class="cta-cs rv">
+      <div class="cta-c">WhatsApp &nbsp;&middot;&nbsp; <a href="https://wa.me/918469600956">+91 84696 00956</a></div>
+      <div class="cta-c">Email &nbsp;&middot;&nbsp; <a href="mailto:novakadvisory02@gmail.com">novakadvisory02@gmail.com</a></div>
+      <div class="cta-c">Based in &nbsp;&middot;&nbsp; Gujarat, India</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div><div class="fb">Novak<span>.</span>Advisory</div><div class="fs">Real Estate Intelligence &nbsp;&middot;&nbsp; Gujarat, India</div></div>
+  <div class="fc">Clarity before commitment.<br>&copy; 2026 Novak Advisory &nbsp;&middot;&nbsp; Private &amp; Confidential</div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target);}});},{threshold:0.08,rootMargin:'0px 0px -25px 0px'});
+document.querySelectorAll('.rv').forEach(el=>{obs.observe(el);});
+
+function fmt(n){
+  if(n>=10000000)return '&#8377;'+(n/10000000).toFixed(2)+'Cr';
+  if(n>=100000)return '&#8377;'+(n/100000).toFixed(1)+'L';
+  return '&#8377;'+Math.round(n).toLocaleString('en-IN');
+}
+function runCalc(){
+  const land=parseFloat(document.getElementById('c-land').value)||0;
+  const lc=parseFloat(document.getElementById('c-lc').value)||0;
+  const cc=parseFloat(document.getElementById('c-cc').value)||0;
+  const sp=parseFloat(document.getElementById('c-sp').value)||0;
+  const bua=parseFloat(document.getElementById('c-bua').value)||0;
+  if(!land||!lc||!cc||!sp||!bua){alert('Please fill in all five fields.');return;}
+  const lt=land*lc;
+  const ct=bua*cc;
+  const soft=ct*0.12;
+  const tdc=lt+ct+soft;
+  const sa=bua*0.85;
+  const rev=sa*sp;
+  const gm=((rev-tdc)/rev)*100;
+  const be=tdc/sa;
+  const cushion=((sp-be)/be)*100;
+  document.getElementById('r-tdc').innerHTML=fmt(tdc);
+  document.getElementById('r-rev').innerHTML=fmt(rev);
+  document.getElementById('r-mgn').innerHTML=gm.toFixed(1)+'%';
+  document.getElementById('r-be').innerHTML='&#8377;'+Math.round(be).toLocaleString('en-IN')+'/sqft';
+  const sig=document.getElementById('r-sig');
+  if(gm>20&&cushion>12){
+    sig.className='csig g';
+    sig.innerHTML='<strong>Preliminary signal: Viable</strong> &mdash; Reasonable margin with a '+cushion.toFixed(0)+'% cushion above break-even. A full analysis would stress-test financing, timeline risk, and absorption.';
+  } else if(gm>10||cushion>5){
+    sig.className='csig a';
+    sig.innerHTML='<strong>Preliminary signal: Marginal</strong> &mdash; Margin exists but cushion is thin at '+cushion.toFixed(0)+'%. Small overruns could erode returns. A full analysis would identify where the risk sits.';
+  } else {
+    sig.className='csig r';
+    sig.innerHTML='<strong>Preliminary signal: Challenging</strong> &mdash; Break-even of &#8377;'+Math.round(be).toLocaleString('en-IN')+'/sqft against a sale price of &#8377;'+Math.round(sp).toLocaleString('en-IN')+'/sqft leaves very limited cushion. Worth a full analysis before committing.';
+  }
+  document.getElementById('c-res').classList.add('show');
+  document.getElementById('c-rst').classList.add('show');
+}
+function resetCalc(){
+  ['c-land','c-lc','c-cc','c-sp','c-bua'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-res').classList.remove('show');
+  document.getElementById('c-rst').classList.remove('show');
+}
+</script>
+</body>
+</html>
