@@ -434,20 +434,21 @@ footer{background:var(--navy-deep);border-top:1px solid var(--dn);padding:2.1rem
         <span class="ey ey-d">Quick Project Check</span>
         <div class="rule rule-d"></div>
         <h2 class="fd calc-h">Get a rough sense of your project in 60 seconds.</h2>
-        <p class="calc-p">Enter a few numbers. Get a preliminary read on project cost, potential return, and whether it broadly makes sense at current market rates.</p>
-        <p class="calc-p">This is a starting point — not an analysis. A full Novak engagement covers 40+ variables across three scenarios. But this tells you whether it is worth a conversation.</p>
-        <div class="calc-note">Indicative only. Based on simplified assumptions and current market benchmarks. Not investment advice.</div>
+        <p class="calc-p">Enter the six numbers that drive a project. Get a preliminary read on total cost, revenue, gross margin, and break-even — at current market rates.</p>
+        <p class="calc-p">This is a starting point — not an analysis. A full Novak engagement covers 40+ variables across three scenarios, including financing, IDC, DSCR, and timeline sensitivity. This tells you whether it is worth a conversation.</p>
+        <div class="calc-note">Built-up Area is the constructed area, on which construction cost is applied. Saleable Area is what buyers pay for — typically built-up multiplied by a loading factor of 1.20 to 1.40, depending on common-area share. Soft costs are taken at 12% of construction (a simplified industry assumption covering approvals, design, marketing, and contingency — excludes financing). Pre-tax. Indicative only. Not investment advice.</div>
       </div>
       <div class="rv">
         <div class="calc-box">
           <div class="cbh"><div class="cbht">Project Quick Check</div><div class="cbhs">Preliminary indication &middot; Not a Novak analysis</div></div>
           <div class="cbf">
             <div class="cbi">
-              <div><label>Land Area (sq yards)</label><input type="number" id="c-land" placeholder="e.g. 5000" min="0"></div>
-              <div><label>Land Cost (&#8377; per sq yard)</label><input type="number" id="c-lc" placeholder="e.g. 120000" min="0"></div>
-              <div><label>Construction Cost (&#8377; per sqft built-up)</label><input type="number" id="c-cc" placeholder="e.g. 2200" min="0"></div>
-              <div><label>Expected Sale Price (&#8377; per sqft saleable)</label><input type="number" id="c-sp" placeholder="e.g. 9000" min="0"></div>
-              <div><label>Built-up Area (sqft)</label><input type="number" id="c-bua" placeholder="e.g. 40000" min="0"></div>
+              <div><label>Land Area (sq yards)</label><input type="number" id="c-land" placeholder="e.g. 2000" min="0"></div>
+              <div><label>Land Cost (&#8377; per sq yard)</label><input type="number" id="c-lc" placeholder="e.g. 80000" min="0"></div>
+              <div><label>Built-up Area (sqft)</label><input type="number" id="c-bua" placeholder="e.g. 35000" min="0"></div>
+              <div><label>Construction Cost (&#8377; per sqft built-up)</label><input type="number" id="c-cc" placeholder="e.g. 2500" min="0"></div>
+              <div><label>Saleable Area (sqft)</label><input type="number" id="c-sa" placeholder="e.g. 45000" min="0"></div>
+              <div><label>Expected Sale Price (&#8377; per sqft saleable)</label><input type="number" id="c-sp" placeholder="e.g. 8500" min="0"></div>
             </div>
             <button class="cbtn" onclick="runCalc()">Check the numbers &rarr;</button>
             <button class="crst" id="c-rst" onclick="resetCalc()">Reset</button>
@@ -460,7 +461,7 @@ footer{background:var(--navy-deep);border-top:1px solid var(--dn);padding:2.1rem
                 <div class="cmet"><div class="cmetv" id="r-tdc">—</div><div class="cmetl">Est. Total Cost</div></div>
                 <div class="cmet"><div class="cmetv" id="r-rev">—</div><div class="cmetl">Est. Revenue</div></div>
                 <div class="cmet"><div class="cmetv" id="r-mgn">—</div><div class="cmetl">Gross Margin</div></div>
-                <div class="cmet"><div class="cmetv" id="r-be">—</div><div class="cmetl">Break-Even/sqft</div></div>
+                <div class="cmet"><div class="cmetv" id="r-be">—</div><div class="cmetl">Break-Even/sqft SA</div></div>
               </div>
               <div class="csig" id="r-sig"></div>
               <div class="ccta">This is indicative only. A full Novak analysis covers benchmarking, financing, DSCR, and three scenario cases. <a href="#contact">Talk to us about your project &rarr;</a></div>
@@ -575,13 +576,15 @@ function runCalc(){
   const cc=parseFloat(document.getElementById('c-cc').value)||0;
   const sp=parseFloat(document.getElementById('c-sp').value)||0;
   const bua=parseFloat(document.getElementById('c-bua').value)||0;
-  if(!land||!lc||!cc||!sp||!bua){alert('Please fill in all five fields.');return;}
+  const sa=parseFloat(document.getElementById('c-sa').value)||0;
+  if(!land||!lc||!cc||!sp||!bua||!sa){alert('Please fill in all six fields.');return;}
+  if(sa<bua){alert('Saleable area should be equal to or greater than built-up area. Saleable typically equals built-up area multiplied by a loading factor of 1.20–1.40, depending on the share of common areas.');return;}
   const lt=land*lc;
   const ct=bua*cc;
   const soft=ct*0.12;
   const tdc=lt+ct+soft;
-  const sa=bua*0.85;
   const rev=sa*sp;
+  const loading=sa/bua;
   const gm=((rev-tdc)/rev)*100;
   const be=tdc/sa;
   const cushion=((sp-be)/be)*100;
@@ -592,19 +595,19 @@ function runCalc(){
   const sig=document.getElementById('r-sig');
   if(gm>20&&cushion>12){
     sig.className='csig g';
-    sig.innerHTML='<strong>Preliminary signal: Viable</strong> &mdash; Reasonable margin with a '+cushion.toFixed(0)+'% cushion above break-even. A full analysis would stress-test financing, timeline risk, and absorption.';
+    sig.innerHTML='<strong>Preliminary signal: Viable</strong> &mdash; Reasonable margin with a '+cushion.toFixed(0)+'% cushion above break-even. Loading factor '+loading.toFixed(2)+'x. A full analysis would stress-test financing, timeline risk, and absorption.';
   } else if(gm>10||cushion>5){
     sig.className='csig a';
-    sig.innerHTML='<strong>Preliminary signal: Marginal</strong> &mdash; Margin exists but cushion is thin at '+cushion.toFixed(0)+'%. Small overruns could erode returns. A full analysis would identify where the risk sits.';
+    sig.innerHTML='<strong>Preliminary signal: Marginal</strong> &mdash; Margin exists but cushion is thin at '+cushion.toFixed(0)+'%. Loading factor '+loading.toFixed(2)+'x. Small overruns could erode returns. A full analysis would identify where the risk sits.';
   } else {
     sig.className='csig r';
-    sig.innerHTML='<strong>Preliminary signal: Challenging</strong> &mdash; Break-even of &#8377;'+Math.round(be).toLocaleString('en-IN')+'/sqft against a sale price of &#8377;'+Math.round(sp).toLocaleString('en-IN')+'/sqft leaves very limited cushion. Worth a full analysis before committing.';
+    sig.innerHTML='<strong>Preliminary signal: Challenging</strong> &mdash; Break-even of &#8377;'+Math.round(be).toLocaleString('en-IN')+'/sqft saleable against a sale price of &#8377;'+Math.round(sp).toLocaleString('en-IN')+'/sqft leaves very limited cushion. Worth a full analysis before committing.';
   }
   document.getElementById('c-res').classList.add('show');
   document.getElementById('c-rst').classList.add('show');
 }
 function resetCalc(){
-  ['c-land','c-lc','c-cc','c-sp','c-bua'].forEach(id=>document.getElementById(id).value='');
+  ['c-land','c-lc','c-cc','c-sp','c-bua','c-sa'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('c-res').classList.remove('show');
   document.getElementById('c-rst').classList.remove('show');
 }
